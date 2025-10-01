@@ -1,0 +1,36 @@
+
+version: 2
+
+models:
+  - name: silver_payments
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: payment_id
+        data_type: varchar
+        constraints:
+          - type: primary_key
+        data_tests:
+          - unique
+          - not_null
+
+      - name: loan_id
+        data_type: varchar
+        constraints:
+          - type: not_null
+          - type: foreign_key
+            to: ref('silver_loans')
+            to_columns: [loan_id]
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_loans')
+                field: loan_id
+
+      - name: payment_dt
+        data_type: date
+      - name: amount
+        data_type: double
+      - name: status
+        data_type: varchar

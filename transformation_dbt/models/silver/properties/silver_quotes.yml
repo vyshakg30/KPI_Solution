@@ -1,0 +1,39 @@
+
+version: 2
+
+models:
+  - name: silver_quotes
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: quote_id
+        data_type: varchar
+        constraints:
+          - type: primary_key
+        data_tests:
+          - unique
+          - not_null
+
+      - name: band
+        data_type: varchar
+        constraints:
+          - type: check
+            expression: "band IN ('A', 'B', 'C')"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [ 'A' , 'B', 'C']
+              config:
+                severity: warn
+
+      - name: created_at
+        data_type: date
+      - name: system_size_kw
+        data_type: integer
+      - name: down_payment
+        data_type: integer
+      - name: system_price
+        data_type: integer
+      - name: email
+        data_type: varchar

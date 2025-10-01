@@ -1,0 +1,31 @@
+Solution_KPI:
+  outputs:
+    dev:
+      type: duckdb
+      path: db/dev.duckdb
+      threads: 1
+      schema: default
+
+    prod:
+      type: duckdb
+      path: db/prod.duckdb
+      threads: 4
+      schema: default
+
+  target: dev
+
+transformation_dbt:
+  outputs:
+    dev:
+      type: duckdb
+      path: db/dev.duckdb
+      threads: 2
+      schema: default
+
+    prod:
+      type: duckdb
+      path: db/prod.duckdb
+      threads: 4
+      schema: default
+
+  target: dev

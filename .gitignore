@@ -1,0 +1,6 @@
+/data/
+/transformation_dbt/target/
+/transformation_dbt/dbt_packages/
+/transformation_dbt/logs/
+/dump/
+/.idea/

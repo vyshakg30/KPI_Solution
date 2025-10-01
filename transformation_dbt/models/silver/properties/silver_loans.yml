@@ -1,0 +1,40 @@
+
+version: 2
+
+models:
+  - name: silver_loans
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: loan_id
+        data_type: varchar
+        constraints:
+          - type: primary_key
+        data_tests:
+          - unique
+          - not_null
+
+      - name: quote_id
+        data_type: varchar
+        constraints:
+          - type: not_null
+          - type: foreign_key
+            to: ref('silver_quotes')
+            to_columns: [quote_id]
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_quotes')
+                field: quote_id
+
+      - name: funded_at
+        data_type: date
+      - name: principal
+        data_type: integer
+      - name: apr
+        data_type: double
+      - name: term_months
+        data_type: integer
+      - name: status
+        data_type: varchar

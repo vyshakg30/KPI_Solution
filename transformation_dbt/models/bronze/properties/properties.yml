@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: bronze_loans
+    config:
+      materialized: table
+
+  - name: bronze_payments
+    config:
+      materialized: table
+
+  - name: bronze_quotes
+    config:
+      materialized: table
