@@ -44,6 +44,7 @@ models:
 
 seeds:
   transformation_dbt:
+    schema: seeds
     loans:
       +column_types:
         loan_id: varchar
