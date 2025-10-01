@@ -19,3 +19,5 @@ payment_id,loan_id,payment_dt,amount,status
 18,9,2024-03-18,260.00,missed
 19,10,2024-02-19,120.00,success
 20,10,2024-03-19,120.00,success
+21,1,2024-03-19,260.00,missed
+22,10,2024-03-19,260.00,missed
