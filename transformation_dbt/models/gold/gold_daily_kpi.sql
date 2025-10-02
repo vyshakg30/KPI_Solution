@@ -10,14 +10,10 @@ silver_loan_defaults AS (
     SELECT
         sl.funded_at,
         sl.loan_id,
-        CASE
-            WHEN
-                COUNT_IF(
-                           sp.status IN ('failed', 'missed') AND
-                           sp.payment_dt BETWEEN sl.funded_at AND (sl.funded_at + INTERVAL 90 DAY)
-                        ) > 0 THEN true
-            ELSE FALSE
-        END AS has_defaults
+        COUNT_IF(
+                    sp.status IN ('failed', 'missed') AND
+                    sp.payment_dt BETWEEN sl.funded_at AND (sl.funded_at + INTERVAL 90 DAY)
+                 ) > 0 AS has_defaults
     FROM
         silver_loans AS sl
     LEFT JOIN {{ ref('silver_payments')}} AS sp ON
