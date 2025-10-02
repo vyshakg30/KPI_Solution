@@ -23,8 +23,8 @@ gold_daily_kpi_median AS (
 
 SELECT
     gdkm.funded_at AS alert_date,
-    gdk.default_rate_D90 >= (1.5 * gdkm.median_default_rate_D90) AS default_spiked,
-    gdk.funded_count <= (0.5 * gdkm.median_funded_count) AS volume_droped,
+    COALESCE(gdk.default_rate_D90 >= (1.5 * gdkm.median_default_rate_D90),false) AS default_spiked,
+    COALESCE(gdk.funded_count <= (0.5 * gdkm.median_funded_count),false) AS volume_droped,
 FROM
     gold_daily_kpi_median gdkm
 LEFT JOIN gold_daily_kpi gdk ON

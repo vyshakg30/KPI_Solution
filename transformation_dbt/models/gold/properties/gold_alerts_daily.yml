@@ -17,5 +17,9 @@ models:
 
       - name: default_spiked
         data_type: boolean
+        constraints:
+          - type: not_null
       - name: volume_droped
         data_type: boolean
+        constraints:
+          - type: not_null
