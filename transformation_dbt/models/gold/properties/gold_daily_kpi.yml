@@ -10,13 +10,13 @@ models:
         data_type: date
         constraints:
           - type: not_null
-          - type: unique_key
+          - type: unique
         data_tests:
           - unique
           - not_null
 
       - name: funded_count
-        data_type: integer
+        data_type: bigint
         constraints:
           - type: check
             expression: "funded_count >= 0"
