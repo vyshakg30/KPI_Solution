@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 
 from db_utils import query_as_dict, config, get_kpi_from_db, get_alerts_from_db
+from report_utils import generate_html_report
 
 app = FastAPI(title=config["app"]["name"])
 
@@ -39,6 +40,13 @@ def get_alerts(date_from: str, date_to: str):
 
 
 @app.get("/api/report")
+def get_report(date_from: str, date_to: str):
+    kpis = get_kpi_from_db(date_from, date_to)
+    alerts = get_alerts_from_db(date_from, date_to)
+    return HTMLResponse(content=generate_html_report(date_from, date_to, kpis, alerts))
+
+
+@app.get("/api/report_json")
 def get_report(date_from: str, date_to: str):
     return {
         "from": date_from,
