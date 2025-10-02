@@ -30,14 +30,14 @@ silver_loan_defaults AS (
 silver_loan_defaults_percentage AS (
     SELECT
         sld.funded_at,
-        ROUND( (COUNT_IF(has_defaults) / count(*)) * 100, 2) AS default_rate_D90
+        (COUNT_IF(has_defaults) / count(*)) * 100 AS default_rate_D90
     FROM
         silver_loan_defaults sld
     GROUP BY
         sld.funded_at
 ),
 
--- Calculate aggregations
+-- Calculate aggregations.
 silver_loan_aggregated AS (
     SELECT
         funded_at,
@@ -48,16 +48,18 @@ silver_loan_aggregated AS (
         silver_loans AS sl
     GROUP BY
         sl.funded_at
-    Order BY
-        sl.funded_at
 )
 
+-- Join aggregations with defaulted 90 day percentage.
 SELECT
-    slg.*,
-    sldp.default_rate_D90
+    slg.funded_at,
+    slg.funded_count,
+    ROUND(slg.avg_apr,2) AS avg_apr,
+    ROUND(slg.principal_weighted_margin,2) AS principal_weighted_margin,
+    ROUND(sldp.default_rate_D90,2) AS default_rate_D90,
 FROM
     silver_loan_aggregated slg
 LEFT JOIN silver_loan_defaults_percentage sldp ON
     slg.funded_at =  sldp.funded_at
-ORDER BY
-    slg.funded_at
+ ORDER BY
+ 	slg.funded_at
