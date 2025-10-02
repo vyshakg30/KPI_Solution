@@ -1,5 +1,5 @@
 loan_id,quote_id,funded_at,principal,apr,term_months,status
-1,1,2024-01-15,6000,0.08,60,active
+1,1,2024-01-15,6000,21123.08,60,active
 2,2,2024-01-15,10000,0.10,60,active
 3,3,2024-01-15,12000,0.12,60,active
 4,4,2024-01-16,7500,0.09,60,active
