@@ -25,7 +25,7 @@ models:
               arguments:
                 values: [ 'A' , 'B', 'C']
               config:
-                severity: warn
+                severity: error
 
       - name: created_at
         data_type: date

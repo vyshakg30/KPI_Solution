@@ -54,8 +54,8 @@ silver_loan_aggregated AS (
 SELECT
     slg.funded_at,
     slg.funded_count,
-    ROUND(slg.avg_apr,2) AS avg_apr,
-    ROUND(slg.principal_weighted_margin,2) AS principal_weighted_margin,
+    ROUND(slg.avg_apr,4) AS avg_apr,
+    ROUND(slg.principal_weighted_margin,4) AS principal_weighted_margin,
     ROUND(sldp.default_rate_D90,2) AS default_rate_D90,
 FROM
     silver_loan_aggregated slg

@@ -1,0 +1,35 @@
+
+version: 2
+
+models:
+  - name: gold_daily_kpi
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: funded_at
+        data_type: date
+        constraints:
+          - type: not_null
+          - type: unique_key
+        data_tests:
+          - unique
+          - not_null
+
+      - name: funded_count
+        data_type: integer
+        constraints:
+          - type: check
+            expression: "funded_count >= 0"
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "funded_count >= 0"
+
+
+      - name: avg_apr
+        data_type: double
+      - name: principal_weighted_margin
+        data_type: double
+      - name: default_rate_D90
+        data_type: double
