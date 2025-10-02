@@ -1,0 +1,21 @@
+
+version: 2
+
+models:
+  - name: gold_alerts_daily
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: alert_date
+        data_type: date
+        constraints:
+          - type: not_null
+          - type: unique
+        data_tests:
+          - unique
+          - not_null
+
+      - name: default_spiked
+        data_type: boolean
+      - name: volume_droped
+        data_type: boolean

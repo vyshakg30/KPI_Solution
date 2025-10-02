@@ -22,9 +22,9 @@ models:
             expression: "funded_count >= 0"
         data_tests:
           - not_null
-          - dbt_utils.expression_is_true:
-              arguments:
-                expression: "funded_count >= 0"
+#          - dbt_utils.expression_is_true:
+#              arguments:
+#                expression: "funded_count >= 0"
 
 
       - name: avg_apr
