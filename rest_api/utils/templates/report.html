@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="En">
+<head>
+    <title>KPI Report {{ from_date }} - {{ to_date }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #2c3e50; }
+        h2 { margin-top: 30px; }
+        img { max-width: 600px; margin: 10px 0; }
+        ul { line-height: 1.6; }
+        table { border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 6px 12px; border: 1px solid #ccc; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+<h1>KPI Report</h1>
+<p><b>Date Range:</b> {{ from_date }} → {{ to_date }}</p>
+<p><b>Generated at:</b> {{ generated_at }}</p>
+
+<h2><u>Summary</u></h2>
+<ul>
+    <li><b>Total Funded Count:</b> {{ funded_total }}</li>
+    <li><b>Average APR:</b> {{ avg_apr|round(2) }}</li>
+    <li><b>Average Margin:</b> {{ avg_margin|round(2) }}</li>
+</ul>
+
+<h2><u>Charts</u></h2>
+<h3>Funded Count Over Time</h3>
+{% if chart1 %}
+<img src="data:image/png;base64,{{ chart1 }}"/>
+{% else %}
+<p>No chart data</p>
+{% endif %}
+
+<h3>Default Rate D90 Over Time</h3>
+{% if chart2 %}
+<img src="data:image/png;base64,{{ chart2 }}"/>
+{% else %}
+<p>No chart data</p>
+{% endif %}
+
+<h2><u>Daily Alerts</u></h2>
+{% if alerts %}
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Default Spiked</th>
+        <th>Volume Dropped</th>
+        <th>Default Spiked Baseline</th>
+        <th>Default Spiked Delta</th>
+        <th>Volume Dropped Baseline</th>
+        <th>Volume Dropped Delta</th>
+    </tr>
+    {% for a in alerts %}
+    <tr>
+        <td>{{ a.alert_date }}</td>
+        <td>{{ a.default_spiked | default('-') }}</td>
+        <td>{{ a.volume_droped | default('-') }}</td>
+        <td>{{ a.default_spiked_baseline | default('-') }}</td>
+        <td>{{ a.default_spiked_delta | default('-') }}</td>
+        <td>{{ a.volume_droped_baseline | default('-') }}</td>
+        <td>{{ a.volume_droped_delta | default('-') }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No alerts in this period.</p>
+{% endif %}
+</body>
+</html>

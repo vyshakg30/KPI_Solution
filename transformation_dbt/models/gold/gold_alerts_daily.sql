@@ -1,30 +1,30 @@
-WITH gold_daily_kpi AS (
-    SELECT
+with gold_daily_kpi as (
+    select
         *
-    FROM {{ ref('gold_daily_kpi') }}
+    from {{ ref('gold_daily_kpi') }}
 ),
 
 gold_daily_kpi_median AS (
-    SELECT
+    select
         gdk.funded_at,
-        MEDIAN(gdk2.default_rate_D90) AS median_default_rate_D90,
-        MEDIAN(gdk2.funded_count) AS median_funded_count,
-        LIST(gdk2.default_rate_D90) AS previous_defaults,
-        LIST(gdk2.funded_count) AS previous_funded_counts,
-        LIST(gdk2.funded_at) AS previous_qualified_dates,
-        COUNT_IF(gdk2.funded_at IS NOT NULL) AS base_line_days
-    FROM
+        median(gdk2.default_rate_D90) as median_default_rate_D90,
+        median(gdk2.funded_count) as median_funded_count,
+        LIST(gdk2.default_rate_D90) as previous_defaults,
+        LIST(gdk2.funded_count) as previous_funded_counts,
+        LIST(gdk2.funded_at) as previous_qualified_dates,
+        COUNT_IF(gdk2.funded_at is not null) as base_line_days
+    from
         gold_daily_kpi gdk
-    LEFT JOIN gold_daily_kpi gdk2 ON
-        gdk2.funded_at BETWEEN (gdk.funded_at - INTERVAL 3 DAY) AND (gdk.funded_at - INTERVAL 1 DAY)
-    GROUP BY gdk.funded_at
-        ORDER BY gdk.funded_at
+    left join gold_daily_kpi gdk2 on
+        gdk2.funded_at between (gdk.funded_at - interval 3 day) and (gdk.funded_at - interval 1 day)
+    group by gdk.funded_at
+        order by gdk.funded_at
 )
 
-SELECT
-    gdkm.funded_at AS alert_date,
-    COALESCE(gdk.default_rate_D90 >= (1.5 * gdkm.median_default_rate_D90),false) AS default_spiked,
-    COALESCE(gdk.funded_count <= (0.5 * gdkm.median_funded_count),false) AS volume_droped,
+select
+    gdkm.funded_at as alert_date,
+    gdk.default_rate_D90 >= (1.5 * gdkm.median_default_rate_D90) as default_spiked,
+    gdk.funded_count <= (0.5 * gdkm.median_funded_count) as volume_droped,
 FROM
     gold_daily_kpi_median gdkm
 LEFT JOIN gold_daily_kpi gdk ON

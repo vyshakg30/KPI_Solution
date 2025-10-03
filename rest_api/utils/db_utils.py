@@ -1,8 +1,10 @@
+import os
+
 import duckdb, yaml
 from duckdb import CatalogException
 
 # load config once
-with open("config.yml", "r") as f:
+with open(os.path.dirname(__file__) + "/../config.yml", "r") as f:
     config = yaml.safe_load(f)
 
 DB_FILE = config["database"]["duckdb_file"]
