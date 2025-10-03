@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from jinja2 import Environment, FileSystemLoader
 
-from .alert_utils import add_alert_baseline_delta
+from rest_api.utils.alert_utils import add_alert_baseline_delta
 
 matplotlib.use("Agg")
 

@@ -9,6 +9,3 @@ loan_id,quote_id,funded_at,principal,apr,term_months,status
 8,8,2024-01-18,11000,0.12,60,defaulted
 9,9,2024-01-18,13000,0.14,60,defaulted
 10,10,2024-01-19,6000,0.08,60,active
-11,10,2024-01-20,6000,0.08,60,active
-12,10,2024-01-21,6000,0.08,60,active
-13,3,2024-01-21,6000,0.08,60,active

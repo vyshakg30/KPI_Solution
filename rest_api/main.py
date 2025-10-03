@@ -1,13 +1,20 @@
+import os
+
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
-from utils.db_utils import query_as_dict, config, get_kpi_from_db, get_alerts_from_db
-from utils.report_utils import render_html_report
+from rest_api.utils.db_utils import query_as_dict, config, get_kpi_from_db, get_alerts_from_db
+from rest_api.utils.report_utils import render_html_report
 
 app = FastAPI(title=config["app"]["name"])
 
-app.mount("/static", StaticFiles(directory="templates/static"), name="static")
+# Resolve absolute path to "templates/static"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, "templates", "static")
+
+# Mount static
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
 #  Global Exception Handler

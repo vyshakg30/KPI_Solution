@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app  # optional: for live reload in dev
+    environment:
+      - PYTHONUNBUFFERED=1
+#    command: uvicorn rest_api.main:app --host 0.0.0.0 --port 8000 --reload

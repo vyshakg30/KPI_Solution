@@ -38,7 +38,9 @@ Gold Layer → KPIs and alerts are calculated from silver layer data and populat
 
 ## Data Modeling
 
-Common Date format 'YYYY-MM-DD' is used.
+- Common Date format 'YYYY-MM-DD' is used.
+- Although For Primary key fields like 'loan_id','quote_id','payment_id' integer appears to be natural choice, varchar, 
+  is chosen here in order to keep it open for alpha numeric type as well.
 
 ### Broze Layer Schema
 Same Table Structure as silver layer with all the fields having datatype varchar to support every kind of data
@@ -109,16 +111,53 @@ Same Table Structure as silver layer with all the fields having datatype varchar
 
 ### System Requirements
 
-- Python version >= 3.9
-- PIP to install all dependencies
-- DBT Core
-- Duck DB Embedded.
 - Docker
 
-### Installation and running
+### Installation Steps and running
 
+### 1. Build and run containers
+
+Build the images and start the containers:
+
+```bash
+docker-compose build --no-cache
+docker-compose up -d
+```
+**Results Are immediately available for viewing jump to last section** 
+
+****
+
+### 2. View logs of a running container
+
+```bash
+docker logs -f fastapi_app
+```
+
+### 3. One encompassing command that does everything: Can be rerun.
+
+```bash
+docker exec -it fastapi_app bash -c "cd transformation_dbt && mkdir -p db && rm -f db/dev.duckdb || true && dbt clean && dbt run --select 'models/'"
+```
+
+### 4. Optional : Move local seed files into container.
+
+```bash
+docker cp /<change_accordingly>/seeds/. fastapi_app:/app/transformation_dbt/seeds/
+```
+- Copies all files from your local `seeds/` folder into the container.
+- Overwrites files with the same name.
+- **Rerun the 3rd command after doing this.**
+---
+
+### 5. Run DBT Tests
+
+```bash
+docker exec -it fastapi_app bash -c "cd transformation_dbt && dbt test"
+```
 
 ### REST End Points with example for result viewing:
+- For All API docs :
+  http://127.0.0.1:8000/docs
 - For KPI on date : 2024-01-15 ->
   http://127.0.0.1:8000/api/kpis?date=2024-01-15
 - For Alerts from data : 2024-01-15 to data : 2024-01-21 ->
