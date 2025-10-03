@@ -1,16 +1,16 @@
 import base64
 import io
+import os
+from datetime import datetime
 
 import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
+from jinja2 import Environment, FileSystemLoader
 
 from .alert_utils import add_alert_baseline_delta
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-from datetime import datetime
-from jinja2 import Environment, FileSystemLoader
-import os
 
 
 def generate_charts(kpi_data):

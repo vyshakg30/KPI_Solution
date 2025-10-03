@@ -67,7 +67,7 @@ body {
 
 .chart {
     width: 100%;
-    max-width: 450px;   /* slightly bigger */
+    max-width: 650px;   /* slightly bigger */
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
@@ -127,4 +127,11 @@ h1::after {
     background: #bdc3c7;  /* elegant grey */
     margin-top: 4px;
     border-radius: 2px;
+}
+
+p {
+    margin: 1px 0;
+    padding: 2px 0;
+    font-size: 14px;
+    color: #444;
 }

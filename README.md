@@ -1,4 +1,14 @@
-Welcome to your new dbt project!
+# Analytics pipeline
+
+## Architecture
+
+### ETL Approach
+We employ a "Best Effort Load" approach for loading raw data, ignoring invalid or redundant points in favor of 
+"Error Quarantining" over an "All or Nothing" method. During testing, invalid entries are easily identified.
+
+Strict data integrity constraints are maintained for all KPI and Alert data stores.
+
+
 
 ### Using the starter project
 
