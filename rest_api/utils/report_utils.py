@@ -83,7 +83,7 @@ def render_html_report(from_date, to_date, kpis, alerts):
 
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "templates")))
+    env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "../templates")))
     template = env.get_template("report.html")
 
     alerts_baseline_delta = add_alert_baseline_delta(alerts)
@@ -100,10 +100,3 @@ def render_html_report(from_date, to_date, kpis, alerts):
         chart1=chart1,
         chart2=chart2,
     )
-
-#
-# def render_pdf_report(html_content):
-#     """Convert HTML to PDF (bytes)."""
-#     output = io.BytesIO()
-#     pisa.CreatePDF(io.StringIO(html_content), dest=output)
-#     return output.getvalue()

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KPI Report {{ from_date }} - {{ to_date }}</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+
+<h1 style="font-size:1.1rem; color:#1a3b6d;">KPI Report</h1>
+
+<!-- Top row: Duration + Summary -->
+<div class="info-wrapper">
+    <div class="info-section">
+        <h3>Duration</h3>
+        <div class="info-stats">
+            <div class="stat"><b>Range:</b> {{ from_date }} → {{ to_date }}</div>
+            <div class="stat"><b>Generated at:</b> {{ generated_at }}</div>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3>Summary</h3>
+        <div class="info-stats">
+            <div class="stat"><b>Funded Count:</b> {{ funded_total }}</div>
+            <div class="stat"><b>Avg APR:</b> {{ avg_apr|round(2) }}</div>
+            <div class="stat"><b>Avg Margin:</b> {{ avg_margin|round(2) }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts row -->
+<div class="charts-wrapper">
+    <div class="chart-container">
+        <h3 style="font-size:0.9rem; color:#1a3b6d;">Funded Count Over Time</h3>
+        {% if chart1 %}
+        <img src="data:image/png;base64,{{ chart1 }}" class="chart"/>
+        {% else %}
+        <p>No chart data</p>
+        {% endif %}
+    </div>
+
+    <div class="chart-container">
+        <h3 style="font-size:0.9rem; color:#1a3b6d;">Default Rate D90 Over Time</h3>
+        {% if chart2 %}
+        <img src="data:image/png;base64,{{ chart2 }}" class="chart"/>
+        {% else %}
+        <p>No chart data</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Alerts -->
+<h2 style="font-size:0.95rem; color:#1a3b6d;"><u>Daily Alerts</u></h2>
+{% if alerts %}
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Default Spiked</th>
+        <th>Volume Dropped</th>
+        <th>Default Spiked Baseline</th>
+        <th>Default Spiked Delta</th>
+        <th>Volume Dropped Baseline</th>
+        <th>Volume Dropped Delta</th>
+    </tr>
+    {% for a in alerts %}
+    <tr>
+        <td>{{ a.alert_date }}</td>
+        <td class="{{ 'red' if a.default_spiked is none else '' }}">
+            {{ a.default_spiked | default('-') }}
+        </td>
+        <td>{{ a.volume_droped | default('-') }}</td>
+        <td>{{ a.default_spiked_baseline | default('-') }}</td>
+        <td>{{ a.default_spiked_delta | default('-') }}</td>
+        <td>{{ a.volume_droped_baseline | default('-') }}</td>
+        <td>{{ a.volume_droped_delta | default('-') }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No alerts in this period.</p>
+{% endif %}
+
+</body>
+</html>

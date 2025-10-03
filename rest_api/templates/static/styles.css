@@ -1,0 +1,130 @@
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 10px;
+    font-size: 0.8rem;
+    background: #f0f2f5;
+    color: #2c3e50;
+}
+
+/* Top info wrapper */
+.info-wrapper {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+/* Info boxes */
+.info-section {
+    flex: 1;
+    background: linear-gradient(120deg, #ffffff, #e6f0ff);
+    padding: 6px 8px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    line-height: 1.1;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.info-section:hover {
+    transform: translateY(-2px);
+}
+
+.info-section h3 {
+    font-size: 0.85rem;
+    margin: 4px 0 6px 0;
+    color: #1a3b6d;
+}
+
+/* Horizontal stats */
+.info-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.info-stats .stat {
+    background: #f7f9fc;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.75rem;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Charts wrapper */
+.charts-wrapper {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.chart-container {
+    flex: 1;
+    text-align: center;
+}
+
+.chart {
+    width: 100%;
+    max-width: 450px;   /* slightly bigger */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease;
+}
+
+.chart:hover {
+    transform: scale(1.02);
+}
+
+/* Alerts table */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.75rem;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+th {
+    background: #1a3b6d;
+    color: white;
+    font-size: 0.75rem;
+}
+
+tr:nth-child(even) td {
+    background: #f5f7fa;
+}
+
+td.red {
+    color: red;
+    font-weight: bold;
+}
+
+/* Elegant line under h1 */
+h1 {
+    font-size: 1.1rem;
+    color: #1a3b6d;
+    margin-bottom: 6px;
+    position: relative;
+    padding-bottom: 6px;
+}
+
+h1::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 2px;          /* thickness of the line */
+    background: #bdc3c7;  /* elegant grey */
+    margin-top: 4px;
+    border-radius: 2px;
+}
