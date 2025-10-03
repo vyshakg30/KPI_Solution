@@ -2,6 +2,7 @@ import base64
 import io
 import os
 from datetime import datetime
+from statistics import mean
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -78,8 +79,9 @@ def render_html_report(from_date, to_date, kpis, alerts):
     chart1, chart2 = generate_charts(kpis)
 
     funded_total = sum(row["funded_count"] or 0 for row in kpis)
-    avg_apr = round(sum(row["avg_apr"] or 0 for row in kpis) / len(kpis), 2) if kpis else 0
-    avg_margin = round(sum(row["principal_weighted_margin"] or 0 for row in kpis) / len(kpis), 2) if kpis else 0
+    weighted_mean_apr = round(sum((row["avg_apr"] or 0) * (row["funded_count"] or 0) for row in kpis)
+                              / sum(row["funded_count"] or 0 for row in kpis) if kpis else 0, 2)
+    mean_principal_margin = round(mean(row["principal_weighted_margin"] or 0 for row in kpis), 2) if kpis else 0
 
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -93,8 +95,8 @@ def render_html_report(from_date, to_date, kpis, alerts):
         to_date=to_date,
         generated_at=ts,
         funded_total=funded_total,
-        avg_apr=avg_apr,
-        avg_margin=avg_margin,
+        weighted_mean_apr=weighted_mean_apr,
+        mean_principal_margin=mean_principal_margin,
         kpis=kpis,
         alerts=alerts_baseline_delta,
         chart1=chart1,
