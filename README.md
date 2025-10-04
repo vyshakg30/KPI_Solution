@@ -17,20 +17,10 @@ Strict data integrity constraints are maintained for all KPI and Alert data stor
 
 The pipeline follows a three-layer Medallion Architecture pattern:
 
-- **Bronze Layer**: Raw data ingestion from external sources
-- **Silver Layer**: Cleaned and validated data with proper constraints
-- **Gold Layer**: Calculated KPIs and business metrics
+- **Bronze Layer**: Raw data is ingested as-is from external sources into the database
+- **Silver Layer**: Data from payments, loans, and quotes tables is cleaned and validated with proper data constraints
+- **Gold Layer**: KPIs and alerts are calculated from silver layer data and populated back into the database with strict schemas
 - **API Layer**: Calculated metrics are served through a REST API
-
-## Data Flow
-
-Bronze Layer → Raw data is ingested as-is from external sources into the database
-
-Silver Layer → Data from payments, loans, and quotes tables is cleaned and validated with proper data constraints
-
-Gold Layer → KPIs and alerts are calculated from silver layer data and populated back into the database with strict schemas
-
-
 
 #### Flow Chart
 
@@ -85,7 +75,13 @@ Same Table Structure as silver layer with all the fields having datatype varchar
 
 ### Gold Layer Schema
 
+
 #### KPIs Table
+
+This model calculates daily loan performance metrics by combining loan and payment data.
+It identifies loans that defaulted within 90 days of funding and computes the daily default rate.
+Finally, it aggregates funded loan counts, average APR, and principal-weighted margin per day.
+
 | Field                    | Data Type | Description                                                 |
 |---------------------------|-----------|-------------------------------------------------------------|
 | funded_ar                 | date      | Date for which KPIs are calculated                          |
@@ -95,6 +91,10 @@ Same Table Structure as silver layer with all the fields having datatype varchar
 | default_rate_D90          | double    | 90-day default rate : Upto 2 Decimal places                                        |
 
 #### Alerts Table
+This model detects anomalies in daily loan KPIs by comparing each day’s metrics with the previous 3-day baseline.
+It computes rolling medians for default rate and funded count to establish reference thresholds.
+Days showing a ≥1.5× spike in defaults or ≤0.5× drop in funded volume are flagged for alerts.
+
 | Field          | Data Type | Description                               |
 |----------------|-----------|-------------------------------------------|
 | alert_date     | date      | Date when alert was triggered             |
@@ -109,11 +109,15 @@ Same Table Structure as silver layer with all the fields having datatype varchar
 - Data Validation: Automated data quality checks at each layer
 - Audit Trail: Full traceability from raw source to business metrics
 
-### System Requirements
-
+### Prerequisites
+#### System
 - Docker
+- Keep port 8000 of host machine available.
 
-### Installation Steps and running
+#### Data
+- transformation_dbt/seeds should contain the loans,payments,quotes csvs.
+
+## Installation Steps and running
 
 ### 1. Build and run containers
 
@@ -139,7 +143,7 @@ docker logs -f fastapi_app
 docker exec -it fastapi_app bash -c "cd transformation_dbt && mkdir -p db && rm -f db/dev.duckdb || true && dbt clean && dbt run --select 'models/'"
 ```
 
-### 4. Optional : Move local seed files into container.
+### 4. _Optional_ : Move local seed files into container.
 
 ```bash
 docker cp /<change_accordingly>/seeds/. fastapi_app:/app/transformation_dbt/seeds/
@@ -149,10 +153,15 @@ docker cp /<change_accordingly>/seeds/. fastapi_app:/app/transformation_dbt/seed
 - **Rerun the 3rd command after doing this.**
 ---
 
-### 5. Run DBT Tests
+### 5. Tests
 
+#### DBT Tests
 ```bash
 docker exec -it fastapi_app bash -c "cd transformation_dbt && dbt test"
+```
+#### Unit & Integration tests
+```bash
+docker exec -it fastapi_app bash -c "pytest tests/ -v"
 ```
 
 ### REST End Points with example for result viewing:

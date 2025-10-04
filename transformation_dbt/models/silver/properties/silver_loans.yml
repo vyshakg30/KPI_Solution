@@ -1,10 +1,9 @@
-
 version: 2
 
 models:
   - name: silver_loans
     config:
-      contract: {enforced: true}
+      contract: { enforced: true }
     columns:
       - name: loan_id
         data_type: varchar
@@ -20,7 +19,7 @@ models:
           - type: not_null
           - type: foreign_key
             to: ref('silver_quotes')
-            to_columns: [quote_id]
+            to_columns: [ quote_id ]
         data_tests:
           - not_null
           - relationships:
@@ -38,3 +37,6 @@ models:
         data_type: integer
       - name: status
         data_type: varchar
+        data_tests:
+          - accepted_values:
+              values: [ 'active', 'defaulted', 'unknown', 'pending' ]
